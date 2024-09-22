@@ -9,6 +9,7 @@ from PIL import Image
 from werkzeug.utils import secure_filename
 import os
 import json
+from fpdf import FPDF
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -847,6 +848,3 @@ def save_to_json(question_responses):
     }
     with open("output_summary.json", "w") as outfile:
         json.dump(outputs, outfile)
-
-
-
