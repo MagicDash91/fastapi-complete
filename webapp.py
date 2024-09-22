@@ -849,6 +849,5 @@ def save_to_json(question_responses):
     with open("output_summary.json", "w") as outfile:
         json.dump(outputs, outfile)
 
-if __name__ == "__main__":
-    main()
+
 
