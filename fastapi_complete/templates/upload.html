@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload File</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            border-radius: 10px;
+            background: white;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #343a40;
+        }
+        .btn-primary {
+            background-color: #b64848;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #ca1717;
+        }
+        .img-fluid {
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .chat-container {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .chat-message {
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .user-message {
+            background-color: #ca1717;
+            color: white;
+            text-align: left;
+            margin-right: 50px;
+        }
+
+        .bot-message {
+            background-color: #e2e3e5;
+            color: black;
+            text-align: left;
+            margin-left: 50px;
+        }
+
+        .user-message strong,
+        .bot-message strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="text-center mb-4">
+        <img src="/static/galvatron.png" alt="Galvatron Logo" class="img-fluid" style="max-width: 200px;"> <!-- Adjust the max-width as needed -->
+    </div>
+
+    <div class="container">
+        <h1 class="text-center mb-4">Upload CSV or Excel File</h1>
+        <form action="/process" method="post" enctype="multipart/form-data" class="mb-5">
+            <div class="mb-3">
+                <input type="file" name="file" accept=".csv,.xlsx" required class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Upload <i class="fas fa-upload"></i></button>
+        </form>
+
+        {% if columns %}
+        <form action="/result" method="post" enctype="multipart/form-data" class="mb-5">
+            <div class="mb-3">
+                <label for="target" class="form-label">Select target variable:</label>
+                <select id="target" name="target" class="form-select">
+                    {% for column in columns %}
+                    <option value="{{ column }}">{{ column }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="target" class="form-label">Select Algorithm to do Prediction:</label>
+                <select name="algorithm" class="form-select">
+                        <option value="Decision Tree">Decision Tree</option>
+                        <option value="Random Forest">Random Forest</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Upload <i class="fas fa-upload"></i></button>
+        </form>
+        {% endif %}
+
+        {% if response1 and response2 %}
+        <h2>Analysis Result</h2>
+        <div class="mb-4">
+            <h3>Countplot Barchart</h3>
+            <img src="{{ url_for('static', path=plot1_path.split('/')[-1]) }}" alt="Plot 1" class="img-fluid">
+            <p>{{ response1|safe }}</p>
+        </div>
+        <div class="mb-4">
+            <h3>Histogram Plot</h3>
+            <img src="{{ url_for('static', path=plot2_path.split('/')[-1]) }}" alt="Plot 2" class="img-fluid">
+            <p>{{ response2|safe }}</p>
+        </div>
+        {% endif %}
+
+        {% if response5 %}
+        <div class="mb-4">
+            <h3>Pairplot</h3>
+            <img src="{{ url_for('static', path=plot5_path.split('/')[-1]) }}" alt="Plot 4" class="img-fluid">
+            <p>{{ response5|safe }}</p>
+        </div>
+        {% endif %}
+
+        {% if response3 %}
+        <div class="mb-4">
+            <h3>Multiclass Barplot</h3>
+            <img src="{{ url_for('static', path=plot3_path.split('/')[-1]) }}" alt="Plot 3" class="img-fluid">
+            <p>{{ response3|safe }}</p>
+        </div>
+        {% endif %}
+
+        {% if response4 %}
+        <div class="mb-4">
+            <h3>Multiclass Histogram Plot</h3>
+            <img src="{{ url_for('static', path=plot4_path.split('/')[-1]) }}" alt="Plot 4" class="img-fluid">
+            <p>{{ response4|safe }}</p>
+        </div>
+        {% endif %}
+
+        {% if response6 %}
+        <div class="mb-4">
+            <h3>Multiclass Pairplot</h3>
+            <img src="{{ url_for('static', path=plot6_path.split('/')[-1]) }}" alt="Plot 4" class="img-fluid">
+            <p>{{ response6|safe }}</p>
+        </div>
+        {% endif %}
+
+        {% if response7 %}
+        <div class="mb-4">
+            <h3>Multiclass Pairplot</h3>
+            <img src="{{ url_for('static', path=plot7_path.split('/')[-1]) }}" alt="Plot 4" class="img-fluid">
+            <p>{{ response7|safe }}</p>
+        </div>
+        {% endif %}
+
+        {% if response8 %}
+        <div class="mb-4">
+            <h3>Decision Tree Regressor</h3>
+            <img src="{{ url_for('static', path=plot8_path.split('/')[-1]) }}" alt="Plot 4" class="img-fluid">
+            <p>{{ response8|safe }}</p>
+        </div>
+        {% endif %}
+
+        {% if response9 %}
+        <div class="mb-4">
+            <h3>Decision Tree Classifier</h3>
+            <img src="{{ url_for('static', path=plot9_path.split('/')[-1]) }}" alt="Plot 4" class="img-fluid">
+            <p>{{ response9|safe }}</p>
+        </div>
+        {% endif %}
+
+        {% if response10 %}
+        <div class="mb-4">
+            <h3>Random Forest Regressor</h3>
+            <img src="{{ url_for('static', path=plot10_path.split('/')[-1]) }}" alt="Plot 4" class="img-fluid">
+            <p>{{ response10|safe }}</p>
+        </div>
+        {% endif %}
+
+        {% if response11 %}
+        <div class="mb-4">
+            <h3>Random Forest Classifier</h3>
+            <img src="{{ url_for('static', path=plot11_path.split('/')[-1]) }}" alt="Plot 4" class="img-fluid">
+            <p>{{ response11|safe }}</p>
+        </div>
+        {% endif %}
+
+        {% if show_conversation %}
+        <h3>Conversation</h3>
+        <form action="/ask" method="post" class="mb-5">
+            <div class="input-group">
+                <input type="text" name="question" class="form-control" placeholder="Ask your question..." required>
+                <button type="submit" class="btn btn-outline-secondary">Ask <i class="fas fa-question-circle"></i></button>
+            </div>
+        </form>
+        {% endif %}
+
+        {% if question_responses %}
+        <h3>Conversation History:</h3>
+        <div class="chat-container mb-4">
+            {% for question, response in question_responses %}
+            <div class="chat-message user-message">
+                <strong>You:</strong> {{ question }}
+            </div>
+            <div class="chat-message bot-message">
+                <strong>Response:</strong> {{ response|safe }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
